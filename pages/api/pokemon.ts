@@ -18,5 +18,16 @@ const requests = {
 
 export const API = {
   getPokemons: (): Promise<PokemonArrayType> => requests.get(`pokemon${requests.params}`),
-  getPokemon: (id: number): Promise<PokemonType> => requests.get(`pokemon/${id}`),
+  getPokemon: (name: string): Promise<PokemonType> => {
+    return requests.get(`pokemon/${name}`)
+              .then((response) => ({
+                species: response.species.name,
+                stats: response.stats.map(({ name, url }: { name: string, url: string }) => ({ name, url })),
+                types: response.types.map(({ name, url }: { name: string, url: string }) => ({ name, url })),
+                weight: response.weight,
+                moves: response.moves.map(({ move: { name, url }}: { move: any, name: string, url: string }) => ({ name, url })),
+                name: response.name,
+                image: response.sprites.front_default,
+              }))
+  }
 }
