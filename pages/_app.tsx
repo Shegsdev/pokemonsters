@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
 
       <nav className={styles.navbar}>
-        <p>pokeMonsters</p>
+        <p><Link href="/">pokeMonsters</Link></p>
       </nav>
       <main className={styles.wrapper}>
         <Component {...pageProps} />

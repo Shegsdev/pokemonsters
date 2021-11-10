@@ -10,24 +10,39 @@ a {
   text-decoration: none;
 }
 
+ul {
+  display: flex;
+  padding: 0;
+  list-style-type: none;
+  justify-content: center;
+}
+
+ul li {
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 0.3rem 0.7rem;
+  margin: 1rem;
+}
+
+ul li:not(:first-child) {
+  border: 1px solid orange;
+}
+
+ul li:last-child {
+  border: none;
+}
+
+ul li:hover {
+  background-color: orange;
+  color: #fff;
+}
+
 * {
   box-sizing: border-box;
 }
 
-.wrapper {
-  background-color: aliceblue;
-}
-
-.navbar {
-  background-color: #fff;;
-  box-shadow: 0 -5px 18px rgba(0, 0, 0, 0.28);
-  display: flex;
-  padding: 2em;
-}
-
-.navbar p {
-  color: orange;
-  font-weight: bold;
-  font-size: 18px;
-  margin: 0;
+@media (max-width: 600px) {
+  ul li {
+    margin: 0.2rem;
+  }
 }

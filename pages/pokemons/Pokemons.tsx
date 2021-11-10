@@ -2,59 +2,51 @@ import type { NextPage } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { API } from '../api/pokemon'
-import { PokemonType } from '../interfaces/pokemon.interface'
+import ReactPaginate from 'react-paginate'
+import { PokemonType, SyntheticEvent } from '../interfaces/pokemon.interface'
 import styles from '../../styles/Pokemons.module.css'
 
-const Pokemons: NextPage = () => {
-  const initialState = {
-    data: [],
-  }
-  const [pokemons, setPokemons] = useState(initialState)
+
+const Pokemons: NextPage = ({ pokemons }) => {
+  const itemsPerPage = 16;
+  const [currentItems, setCurrentItems] = useState(null);
+  const [pageCount, setPageCount] = useState(0);
+  const [itemOffset, setItemOffset] = useState(0);
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+
   const router = useRouter()
 
-  const getPokemonDetails = (name: string) => {
-    return API.getPokemon(name)
-        .then((pokemon) => {
-          setPokemons((prevState: any) => ({
-            ...prevState,
-            data: [...prevState.data, pokemon]
-          }))
-        })
-        .catch((error) => {
-          setError(true)
-        })
-  }
-
   useEffect(() => {
-    API.getPokemons()
-       .then(({ count, results }) => {
-         if (Array.isArray(results)) {
-           results.forEach(({ name, url }) => { getPokemonDetails(name) })
-          }
-        })
-       .catch((error) => {
-         setError(true)
-       })
-    return () => {}
-  }, [])
+    if (!pokemons) setLoading(true)
+    else {
+      const endOffset = itemOffset + itemsPerPage
+      setPageCount(Math.ceil(pokemons.length / itemsPerPage))
+      setCurrentItems(pokemons.slice(itemOffset, endOffset))
+    }
+    return setLoading(false)
+  }, [itemOffset, pokemons])
 
-  const handleClick = (path: string) => {
+  const handleCardClick = (path: string) => {
     router.push(path)
   }
 
-  const { data } = pokemons
+  const handlePageClick = (event:SyntheticEvent<HTMLAnchorElement>) => {
+    const newOffset = (event.selected * itemsPerPage) % pokemons.length;
+    setItemOffset(newOffset);
+  };
+  
 
-  if (!error && data) {
+  if (error) return <div className={styles.main}><p>Problem loading page. Try again.</p></div>
+  if (!loading && currentItems) {
     return (
       <>
         <div className={styles.main}>
           <div className={styles.container}>
             <div className={styles.grid}>
               {
-                data.map((poke: PokemonType) => (
-                  <div className={styles.card} key={poke.name} onClick={(e) => handleClick(`/pokemons/${poke.name}`)}>
+                currentItems.map((poke: PokemonType) => (
+                  <div className={styles.card} key={poke.name} onClick={(e) => handleCardClick(`/pokemons/${poke.name}`)}>
                     <Image src={poke.sprite} alt="sprite" width={45} height={45} />
                     <h6>{poke.name}</h6>
                     <div className={styles.cardDetails}>
@@ -67,13 +59,23 @@ const Pokemons: NextPage = () => {
             </div>
           </div>
         </div>
+
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel="next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel="< previous"
+          renderOnZeroPageCount={null}
+        />
       </>
     )
   }
   return (
-    <>
+    <div className={styles.main}>
       <p>Loading...</p>
-    </>
+    </div>
   )
 }
 

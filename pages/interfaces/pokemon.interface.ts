@@ -18,3 +18,6 @@ export interface PokemonType {
   name: string,
   sprite: string,
 }
+export interface SyntheticEvent<T> {
+  selected: number
+}

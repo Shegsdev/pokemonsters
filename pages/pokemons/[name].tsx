@@ -1,23 +1,27 @@
 import type { NextPage } from 'next'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { API } from '../api/pokemon'
-import { PokemonType } from '../interfaces/pokemon.interface'
 import styles from '../../styles/PokemonDetails.module.css'
 
 const PokemonDetails: NextPage = () => {
   const { query: { name } } = useRouter()
-  const [pokemon, setPokemon] = useState<PokemonType>({})
+  const [pokemon, setPokemon] = useState({})
   const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    API.getPokemon(name)
-       .then((response) => setPokemon({ ...response }))
-       .catch((error) => {
-         setError(true)
-       })
-    return () => {}
+  useEffect(() => {    
+    setLoading(true)
+    const fetchData = async () => {
+      const data = await API.getPokemon(name)
+      if (data) setPokemon({ ...data })
+      else setError(true)
+      return null
+    }
+    fetchData()
+    return setLoading(false)
   }, [name])
 
   const renderBadges = (items: any) => (
@@ -26,40 +30,47 @@ const PokemonDetails: NextPage = () => {
     ))
   )
 
-  if (!error) {
+  const { name: name_, species, weight, types, stats, moves, sprite } = pokemon
+  
+
+  if (error) return (<div className={styles.main}><p>Problem loading page. Try again.</p></div>)
+  if (!loading && name_) {
     return (
       <div className={styles.main}>
           <div className={styles.container}>
             {
               <div className={styles.card}>
                 <div className={styles.cardHeader}>
-                  <h2>{pokemon.name}</h2>
+                  <h2>{name}</h2>
                 </div>
                 <div className={styles.cardContent}>
                   <div className={styles.details}>
-                    <p>Specie: {pokemon.species}</p>
-                    <p>Weight: {pokemon.weight}</p>
+                    <p>Specie: <strong>{species.toUpperCase()}</strong></p>
+                    <p>Weight: <strong>{weight}</strong></p>
                     <p>Types:
                       {" "}
                       {
-                        renderBadges(pokemon.types)
+                        renderBadges(types)
                       }
                     </p>
                     <p>Stats:
                       {" "}
                       {
-                        renderBadges(pokemon.stats)
+                        renderBadges(stats)
                       }
                     </p>
                     <p>Moves:
                       {" "}
                       {
-                        renderBadges(pokemon.moves)
+                        renderBadges(moves)
                       }
                     </p>
+                    <small>
+                      <Link href="/">&lt; Go back to all pokemons</Link>
+                    </small>
                   </div>
                   <div className={styles.sprite}>
-                    {pokemon.sprite && (<Image src={pokemon.sprite} alt="pokemon image" layout='fill' />)}
+                    <Image src={sprite} alt="pokemon image" layout='fill' />
                   </div>
                 </div>
               </div>
@@ -69,9 +80,9 @@ const PokemonDetails: NextPage = () => {
     )
   }
   return (
-    <>
+    <div className={styles.main}>
       <p>Loading...</p>
-    </>
+    </div>
   )
 }
 
