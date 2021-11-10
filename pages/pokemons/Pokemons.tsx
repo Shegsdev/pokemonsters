@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { API } from '../api/pokemon'
 import { PokemonType } from '../interfaces/pokemon.interface'
@@ -11,6 +12,7 @@ const Pokemons: NextPage = () => {
   }
   const [pokemons, setPokemons] = useState(initialState)
   const [error, setError] = useState(false)
+  const router = useRouter()
 
   const getPokemonDetails = (name: string) => {
     return API.getPokemon(name)
@@ -38,26 +40,22 @@ const Pokemons: NextPage = () => {
     return () => {}
   }, [])
 
-  const handleClick = () => {
-    //
+  const handleClick = (path: string) => {
+    router.push(path)
   }
 
   const { data } = pokemons
 
   if (!error && data) {
     return (
-      <div className={styles.wrapper}>
-        <nav>
-          <p>pokeMonsters</p>
-        </nav>
-
+      <>
         <div className={styles.main}>
           <div className={styles.container}>
             <div className={styles.grid}>
               {
                 data.map((poke: PokemonType) => (
-                  <div className={styles.card} key={poke.name} onClick={handleClick}>
-                    <Image src={poke.image} alt="pokemon image" width={45} height={45} />
+                  <div className={styles.card} key={poke.name} onClick={(e) => handleClick(`/pokemons/${poke.name}`)}>
+                    <Image src={poke.sprite} alt="sprite" width={45} height={45} />
                     <h6>{poke.name}</h6>
                     <div className={styles.cardDetails}>
                       <p>{poke.species}</p>
@@ -69,11 +67,13 @@ const Pokemons: NextPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </>
     )
   }
   return (
-    <></>
+    <>
+      <p>Loading...</p>
+    </>
   )
 }
 

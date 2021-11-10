@@ -18,16 +18,16 @@ const requests = {
 
 export const API = {
   getPokemons: (): Promise<PokemonArrayType> => requests.get(`pokemon${requests.params}`),
-  getPokemon: (name: string): Promise<PokemonType> => {
-    return requests.get(`pokemon/${name}`)
-              .then((response) => ({
-                species: response.species.name,
-                stats: response.stats.map(({ name, url }: { name: string, url: string }) => ({ name, url })),
-                types: response.types.map(({ name, url }: { name: string, url: string }) => ({ name, url })),
-                weight: response.weight,
-                moves: response.moves.map(({ move: { name, url }}: { move: any, name: string, url: string }) => ({ name, url })),
-                name: response.name,
-                image: response.sprites.front_default,
-              }))
-  }
+  getPokemon: (name: string): Promise<PokemonType> => 
+    requests
+      .get(`pokemon/${name}`)
+      .then((response) => ({
+        species: response.species.name,
+        stats: response.stats.map(({ stat: { name, url }}: { stat: any, name: string, url: string }) => ({ name, url })),
+        types: response.types.map(({ type: { name, url }}: { type: any, name: string, url: string }) => ({ name, url })),
+        weight: response.weight,
+        moves: response.moves.map(({ move: { name, url }}: { move: any, name: string, url: string }) => ({ name, url })),
+        name: response.name,
+        sprite: response.sprites.other.dream_world.front_default || response.sprites.front_default,
+      }))
 }

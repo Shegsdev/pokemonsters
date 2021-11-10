@@ -16,5 +16,5 @@ export interface PokemonType {
   weight: number,
   moves: ResultType,
   name: string,
-  image: string,
+  sprite: string,
 }
