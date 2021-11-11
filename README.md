@@ -46,8 +46,8 @@ You can test it locally by cloning this repo
 Move into the project directory and install dependencies:
 
 
-```yarn install``` or ```npm install```
+```yarn``` or ```npm install```
 
 Boot up the server:
 
-```yarn start``` or ```npm start```
+```yarn dev``` or ```npm dev```
