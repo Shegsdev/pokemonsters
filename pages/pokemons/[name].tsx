@@ -59,12 +59,12 @@ const PokemonDetails: NextPage = () => {
                         renderBadges(stats)
                       }
                     </p>
-                    <p>Moves:
+                    <div className={styles.moves}>Moves:
                       {" "}
                       {
                         renderBadges(moves)
                       }
-                    </p>
+                    </div>
                     <small>
                       <Link href="/">&lt; Go back to all pokemons</Link>
                     </small>

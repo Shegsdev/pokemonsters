@@ -50,4 +50,4 @@ Move into the project directory and install dependencies:
 
 Boot up the server:
 
-```yarn dev``` or ```npm dev```
+```yarn dev``` or ```npm run dev```
