@@ -70,7 +70,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   return {
     props: {
-      pokemons: result
+      pokemon: result
     }
   }
 }
