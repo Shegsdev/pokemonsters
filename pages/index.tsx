@@ -1,25 +1,26 @@
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import Pokemons from './pokemons/Pokemons'
 import { API } from './api/pokemon'
+import { PokemonType } from '../interfaces/pokemon.interface'
 
-const Home: NextPage = ({ pokemons }) => {
+const Home: NextPage<{pokemons: PokemonType[], error: Boolean}> = ({ pokemons, error }) => {
   return (
     <>
-      <Pokemons pokemons={pokemons} />
+      <Pokemons pokemons={pokemons} error={error} />
     </>
   )
 }
 
-export const getServerSideProps = async () => {
-  const data = await API.getPokemons()
-  if (!data) return {
+export const getServerSideProps: GetServerSideProps = async () => {
+  const result = await API.getPokemons()
+  if (result instanceof Error) return {
     props: {
-      notFound: false
+      error: true
     }
   }
   return {
     props: {
-      pokemons: data
+      pokemons: result
     }
   }
 }
