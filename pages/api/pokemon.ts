@@ -1,5 +1,5 @@
-import axios from 'axios'
-import { PokemonArrayType, PokemonType } from '../interfaces/pokemon.interface'
+import axios, { AxiosResponse } from 'axios'
+import { PokemonType } from '../../interfaces/pokemon.interface'
 
 const client = axios.create({
   baseURL: 'https://pokeapi.co/api/v2/',
@@ -8,8 +8,8 @@ const client = axios.create({
 
 const requests = {
   get: async (url: string) => {
-    const response = await client.get(url)
-    const { data } = response
+    const response: AxiosResponse = await client.get(url)
+    const { data } = await response
     return data
   },
   params: '/?limit=50'
@@ -17,7 +17,7 @@ const requests = {
 
 
 export const API = {
-  getPokemons: async () => {
+  getPokemons: async (): Promise<PokemonType[] | Error> => {
     try {
       const { results } = await requests.get(`pokemon${requests.params}`)
       return Promise.all(
@@ -26,12 +26,11 @@ export const API = {
           return data
         })
       )
-    } catch(error) {
-        console.info(error)
-    }
-    
+    } catch(error: any) {
+        return new Error(error.code)
+    }    
   },
-  getPokemon: async (name: string) => {
+  getPokemon: async (name: string): Promise<PokemonType | Error> => {
     try {
       const response = await requests.get(`pokemon/${name}`)
       return {
@@ -43,8 +42,8 @@ export const API = {
         name: response.name,
         sprite: response.sprites.other.dream_world.front_default || response.sprites.front_default,
       }
-    } catch(error) {
-        console.info(error)
+    } catch(error: any) {
+        return new Error(error.code)
     }
   }
 }
