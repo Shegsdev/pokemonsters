@@ -1,0 +1,18 @@
+.wrapper {
+  background-color: aliceblue;
+}
+
+.navbar {
+  background-color: #fff;;
+  box-shadow: 0 -5px 18px rgba(0, 0, 0, 0.28);
+  display: flex;
+  padding: 2em;
+}
+
+.navbar p {
+  color: orange;
+  font-family: cursive;
+  font-weight: bold;
+  font-size: 18px;
+  margin: 0;
+}

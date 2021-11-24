@@ -2,8 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: cursive, 'Gill Sans', 'Lucida Sans Unicode';
 }
 
 a {
@@ -11,6 +10,39 @@ a {
   text-decoration: none;
 }
 
+ul {
+  display: flex;
+  padding: 0;
+  list-style-type: none;
+  justify-content: center;
+}
+
+ul li {
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 0.3rem 0.7rem;
+  margin: 1rem;
+}
+
+ul li:not(:first-child) {
+  border: 1px solid orange;
+}
+
+ul li:last-child {
+  border: none;
+}
+
+ul li:hover {
+  background-color: orange;
+  color: #fff;
+}
+
 * {
   box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  ul li {
+    margin: 0.2rem;
+  }
 }

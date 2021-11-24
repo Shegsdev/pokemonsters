@@ -1,0 +1,58 @@
+.card {
+  background-color: #fff;
+  border-radius: 25px;
+  padding: 2rem;
+}
+
+.cardHeader h2 {
+  font-size: 3rem;
+  margin: 0;
+}
+
+.cardContent {
+  display: flex;
+  justify-content: space-between;
+}
+
+.details {
+  max-width: 800px;
+  z-index: 9999;
+}
+
+.badge {
+  background-color: blueviolet;
+  border-radius: 8px;
+  color: #fff;
+  font-size: x-small;
+  padding: 0.1rem 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.moves {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.moves a {
+  margin-top: 0.5em;
+}
+
+.sprite img {
+  opacity: 0.1;
+}
+
+.container {
+  padding: 0 2rem;
+}
+
+.main {
+  min-height: 80vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

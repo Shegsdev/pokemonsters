@@ -1,34 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# pokéMonsters
 
-## Getting Started
+pokeMonsters is an application that helps you learn about all the species of pocket monsters that exist.
+According to [Wiki](https://en.wikipedia.org/wiki/Pok%C3%A9mon), there are over 1000 species.
+To learn more click [here](https://en.wikipedia.org/wiki/Pok%C3%A9mon)
 
-First, run the development server:
+For development, I relied on an external API resource for data.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### Approach
+Firstly, I took some time to study the API documentation and know:
+* How the data is structured
+* What are the available endpoints and which ones will be needed
+* What are the required query parameters in order to make a successful API call
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+After having some understanding of the endpoints, I began implementing them in code.
+For our application, all we need includes:
+1. An endpoint to get all Pokemons - GET: /
+2. An endpoint to get a specific Pokemon - GET: /pokemons/{name}
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Starting with the backend, I wrote two [utility functions](https://github.com/Shegsdev/pokemonsters/blob/develop/pages/api/pokemon.ts) to perform the tasks.
+Both function calls are asynchronous, so we need to make sure the response payload resolves successfully before sending it to the frontend.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+#### Consuming the API
+On the client-side, there is an index page where all pokemon characters are displayed and a sub-page that shows an individual character.
+To fetch all characters, we make a request using `getPokemons` API method. This returns an array of objects containing the data we need.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Displaying the results all at once will make the first page load slow, so there's a pagination functionality to help render just enough data.
 
-## Learn More
+### Future updates
+Here are some of the functionalities I wish to add as well as improve on:
+* Root page search bar (Search for Pokemons by name, ability, specie, etc)
+* Improve page load (Fetching a large amount of data loads quite slow on first page load)
+* Add more pages to view more data
+* Improve User Interface
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Features
+* View all Pokemons
+* View a single Pokemon
+* Pagination
+* Responsiveness
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+### Running the application
+You can test it locally by cloning this repo
+Move into the project directory and install dependencies:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```yarn``` or ```npm install```
+
+Boot up the server:
+
+```yarn dev``` or ```npm run dev```
